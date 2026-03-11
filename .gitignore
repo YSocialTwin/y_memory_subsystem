@@ -1,0 +1,10 @@
+.idea/
+.pytest_cache/
+.venv/
+dist/
+build/
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+.ipynb_checkpoints/
