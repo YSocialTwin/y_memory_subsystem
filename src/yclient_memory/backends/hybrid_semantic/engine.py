@@ -222,7 +222,7 @@ class HybridSemanticMemoryEngine:
         if not lines:
             return BrowseMemoryContext(diagnostics=diagnostics)
         diagnostics.usage = "thread_local"
-        return BrowseMemoryContext(rendered_text=truncate("\n".join(lines), 220), diagnostics=diagnostics)
+        return BrowseMemoryContext(rendered_text=self._truncate_block("\n".join(lines), 220), diagnostics=diagnostics)
 
     def build_post_style_context(self, request: PostStyleRequest) -> PostStyleContext:
         diagnostics = MemoryDiagnostics(metadata={"root_count": 0, "distinct_author_count": 0, "mature": False})
@@ -250,7 +250,7 @@ class HybridSemanticMemoryEngine:
             lines.append("recurring formats: " + ", ".join(meme_lines[:2]))
         lines.append("use this only for tone and structure, not as a topic list")
         diagnostics.usage = "style_digest_only"
-        return PostStyleContext(rendered_text=truncate("\n".join(lines), 280), diagnostics=diagnostics)
+        return PostStyleContext(rendered_text=self._truncate_block("\n".join(lines), 280), diagnostics=diagnostics)
 
     def record_comment(self, event: CommentMemoryEvent) -> None:
         note = self._heuristic_interaction_note(event.other_text, event.my_text)
@@ -658,6 +658,8 @@ class HybridSemanticMemoryEngine:
         other_user_id: int | None,
         thread_root_id: int | None,
     ) -> float:
+        if float(item.score or 0.0) > 0.0:
+            return float(item.score)
         text_tokens = self._search_tokens(item.text_humanized or item.text)
         if not text_tokens:
             return 0.0
@@ -912,3 +914,9 @@ class HybridSemanticMemoryEngine:
         if not left_tokens or not right_tokens:
             return 0.0
         return len(left_tokens.intersection(right_tokens)) / max(1, min(len(left_tokens), len(right_tokens)))
+
+    def _truncate_block(self, text: str, max_chars: int) -> str:
+        text = str(text or "").strip()
+        if len(text) <= max_chars:
+            return text
+        return text[: max_chars - 3].rstrip() + "..."
