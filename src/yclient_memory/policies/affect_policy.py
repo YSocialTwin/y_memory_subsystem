@@ -22,7 +22,7 @@ def detect_high_affect_signal(
         ),
     }
     score = (
-        0.30 * triggers["criticism_or_challenge"]
+        0.40 * triggers["criticism_or_challenge"]
         + 0.35 * triggers["conflict_or_argument"]
         + 0.15 * triggers["incoming_anecdote"]
         + 0.30 * triggers["defending_prior_opinion"]
