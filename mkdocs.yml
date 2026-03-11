@@ -1,0 +1,24 @@
+site_name: yclient-memory
+site_description: Shared memory subsystem for YClientReddit and YClient
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
+nav:
+  - Overview: index.md
+  - Features: features.md
+  - API Surface: api.md
+  - Backends:
+      - Backend Matrix: backend_matrix.md
+      - Hybrid Semantic: backends/hybrid_semantic.md
+      - Simple Recent: backends/simple_recent.md
+  - Extending:
+      - Build a New Backend: extending/new_backend.md
+      - Runtime Adapter: runtime_adapter.md
+  - Integration:
+      - YClientReddit Replacement: integration/yclientreddit.md
+      - YClient Replacement: integration/yclient.md
+  - Validation:
+      - Parity Strategy: parity.md

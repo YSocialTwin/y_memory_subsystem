@@ -88,3 +88,15 @@ Example walkthroughs live in:
 ```bash
 python -m pytest
 ```
+
+## MkDocs
+
+```bash
+uv run --with mkdocs-material mkdocs serve
+```
+
+Strict build:
+
+```bash
+uv run --with mkdocs-material mkdocs build --strict
+```

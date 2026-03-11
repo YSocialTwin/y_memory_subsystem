@@ -1,8 +1,11 @@
 .idea/
 .pytest_cache/
 .venv/
+site/
 dist/
 build/
+*.egg-info/
+uv.lock
 *.pyc
 *.pyo
 *.pyd
