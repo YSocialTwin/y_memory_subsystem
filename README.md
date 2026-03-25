@@ -1,7 +1,7 @@
 # yclient-memory
 
 `yclient-memory` is an in-tree implementation of the external memory package described in
-[`external_memory_package_pipeline.md`](/Users/rossetti/PycharmProjects/y_memory_subsystem/external_memory_package_pipeline.md).
+[`external_memory_package_pipeline.md`](https://github.com/YSocialTwin/y_memory_subsystem/blob/main/external_memory_package_pipeline.md).
 
 It provides:
 
@@ -11,6 +11,14 @@ It provides:
 - two interchangeable backends:
   - `hybrid_semantic`
   - `simple_recent`
+
+## Installation
+
+From PyPI, once published:
+
+```bash
+pip install yclient-memory
+```
 
 ## Quick Start
 
@@ -64,7 +72,7 @@ Core operations:
 ## Runtime Adapter
 
 The package expects a runtime object with the methods documented in
-[`docs/runtime_adapter.md`](/Users/rossetti/PycharmProjects/y_memory_subsystem/docs/runtime_adapter.md).
+[`docs/runtime_adapter.md`](https://github.com/YSocialTwin/y_memory_subsystem/blob/main/docs/runtime_adapter.md).
 
 At minimum, backends depend on:
 
@@ -80,14 +88,31 @@ At minimum, backends depend on:
 
 Example walkthroughs live in:
 
-- [`output/jupyter-notebook/hybrid-semantic-memory-walkthrough.ipynb`](/Users/rossetti/PycharmProjects/y_memory_subsystem/output/jupyter-notebook/hybrid-semantic-memory-walkthrough.ipynb)
-- [`output/jupyter-notebook/simple-recent-memory-walkthrough.ipynb`](/Users/rossetti/PycharmProjects/y_memory_subsystem/output/jupyter-notebook/simple-recent-memory-walkthrough.ipynb)
+- [`output/jupyter-notebook/hybrid-semantic-memory-walkthrough.ipynb`](https://github.com/YSocialTwin/y_memory_subsystem/blob/main/output/jupyter-notebook/hybrid-semantic-memory-walkthrough.ipynb)
+- [`output/jupyter-notebook/simple-recent-memory-walkthrough.ipynb`](https://github.com/YSocialTwin/y_memory_subsystem/blob/main/output/jupyter-notebook/simple-recent-memory-walkthrough.ipynb)
 
 ## Development
 
 ```bash
 python -m pytest
 ```
+
+## Packaging And Release
+
+Build locally:
+
+```bash
+python -m pip install .[release]
+python -m build
+python -m twine check dist/*
+```
+
+The repository also includes GitHub Actions workflows for package validation and PyPI publishing:
+
+- [package.yml](https://github.com/YSocialTwin/y_memory_subsystem/blob/main/.github/workflows/package.yml)
+- [publish-pypi.yml](https://github.com/YSocialTwin/y_memory_subsystem/blob/main/.github/workflows/publish-pypi.yml)
+
+Release details are documented in [docs/release_pipeline.md](https://github.com/YSocialTwin/y_memory_subsystem/blob/main/docs/release_pipeline.md).
 
 ## MkDocs
 

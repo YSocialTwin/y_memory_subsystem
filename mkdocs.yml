@@ -20,5 +20,7 @@ nav:
   - Integration:
       - YClientReddit Replacement: integration/yclientreddit.md
       - YClient Replacement: integration/yclient.md
+  - Packaging:
+      - Release Pipeline: release_pipeline.md
   - Validation:
       - Parity Strategy: parity.md
