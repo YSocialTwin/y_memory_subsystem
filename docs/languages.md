@@ -71,3 +71,15 @@ Italian hold-out written after the lexicons reports how well they generalise.
 `scripts/e2e_memory_sim.py` runs both backends over the same seed, agents and schedule in
 English and Italian, and compares the share of replies that get a memory block, the
 callbacks, the high-affect signals and the absence of English sentences in the Italian run.
+
+## Retrieval and the "strong" scope
+
+The hybrid backend scores memories by token overlap (tokens of three or more letters,
+without stop words). English keeps its historic 16-word stop list, so function words such
+as `the`, `you` and `that` count as overlap and push more replies into the `strong`
+scope; Italian has its own, longer stop list and gets fewer accidental matches. On the
+parallel corpus the gap in `strong` replies (26 English, 11 Italian before the longer
+list) closes once function words are ignored on both sides (10 against 7). What matters
+is whether a query about the same topic finds its memory: `scripts/measure_retrieval.py`
+gives top-1 retrieval of 0.83 (English) and 0.92 (Italian) on twelve topical pairs among
+ten distractors. The English stop list is left unchanged on purpose.
