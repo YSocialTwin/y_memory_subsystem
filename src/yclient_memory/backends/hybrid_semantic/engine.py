@@ -24,6 +24,7 @@ from ...contracts import (
 )
 from ...logging import emit_decision_log
 from ...policies.affect_policy import detect_high_affect_signal as detect_high_affect_signal_policy
+from ... import i18n
 from ...policies.prompt_policy import build_conversation_cues, format_conversation_cues
 from ...policies.safety_policy import (
     CALLBACK_STOPWORDS,
@@ -82,7 +83,7 @@ class HybridSemanticMemoryEngine:
             return ReplyMemoryContext(diagnostics=diagnostics)
 
         ctx = self._fetch_context(other_user_id=request.other_user_id, thread_root_id=request.thread_root_id)
-        username = str(request.other_username or "").strip().lstrip("@") or "this user"
+        username = str(request.other_username or "").strip().lstrip("@") or self._t("mem__user_fallback")
 
         metrics_line = ""
         continuity_parts = []
@@ -90,22 +91,24 @@ class HybridSemanticMemoryEngine:
 
         social_card = ctx.get("social_card")
         if isinstance(social_card, dict):
-            metrics_line = (
-                f"History with @{username}: affinity={float(social_card.get('affinity') or 0.0):.2f}, "
-                f"conflict={float(social_card.get('conflict') or 0.0):.2f}, "
-                f"humor={float(social_card.get('humor') or 0.0):.2f}, "
-                f"trust={float(social_card.get('trust') or 0.0):.2f}"
+            metrics_line = self._t(
+                "mem__history_line",
+                username=username,
+                affinity=f"{float(social_card.get('affinity') or 0.0):.2f}",
+                conflict=f"{float(social_card.get('conflict') or 0.0):.2f}",
+                humor=f"{float(social_card.get('humor') or 0.0):.2f}",
+                trust=f"{float(social_card.get('trust') or 0.0):.2f}",
             )
             summary_text = sanitize_prompt_memory_text(social_card.get("summary_text") or "", 120)
             if summary_text:
-                continuity_parts.append(f"with @{username}: {summary_text}")
+                continuity_parts.append(self._t("mem__continuity_with", username=username, text=summary_text))
                 local_signal_count += 1
 
         thread_card = ctx.get("thread_card")
         if isinstance(thread_card, dict):
             gist_text = sanitize_prompt_memory_text(thread_card.get("gist_text") or "", 120)
             if gist_text:
-                continuity_parts.append(f"this thread: {gist_text}")
+                continuity_parts.append(self._t("mem__continuity_thread", text=gist_text))
                 local_signal_count += 1
 
         for event in reversed(ctx.get("recent_pair_events") or []):
@@ -119,7 +122,7 @@ class HybridSemanticMemoryEngine:
                 continue
             claim = sanitize_prompt_memory_text(event.get("salient_claim") or "", 100)
             if claim:
-                continuity_parts.append(f"earlier here: {claim}")
+                continuity_parts.append(self._t("mem__continuity_earlier", text=claim))
                 local_signal_count += 1
                 break
 
@@ -160,7 +163,7 @@ class HybridSemanticMemoryEngine:
                     break
 
         if callback_text:
-            continuity_parts.append(f"if clearly relevant: {callback_text}")
+            continuity_parts.append(self._t("mem__continuity_callback", text=callback_text))
             diagnostics.metadata["cross_thread_callback_candidate"] = True
             diagnostics.metadata["cross_thread_callback_score"] = callback_score
             diagnostics.top_score = callback_score
@@ -174,7 +177,7 @@ class HybridSemanticMemoryEngine:
         if metrics_line:
             lines.append(metrics_line)
         if continuity_text:
-            lines.append("Continuity: " + continuity_text)
+            lines.append(self._t("mem__continuity_label", text=continuity_text))
         rendered = "\n".join(lines).strip()
 
         meta = {
@@ -191,8 +194,11 @@ class HybridSemanticMemoryEngine:
             nuance_enabled=self.config.nuance_enabled,
             min_score=self.config.nuance_min_score,
             callback_probability=self.config.nuance_callback_probability,
+            language=self.config.language,
         )
-        cues.rendered_text = format_conversation_cues(cues, self.config.nuance_cues_max_chars)
+        cues.rendered_text = format_conversation_cues(
+            cues, self.config.nuance_cues_max_chars, language=self.config.language
+        )
         return ReplyMemoryContext(
             rendered_text=rendered,
             cues=cues,
@@ -214,11 +220,11 @@ class HybridSemanticMemoryEngine:
         lines = []
         gist = sanitize_prompt_memory_text(thread_card.get("gist_text") or "", 160)
         if gist:
-            lines.append("[THREAD MEMORY]")
-            lines.append("thread gist: " + gist)
+            lines.append(self._t("mem__thread_header"))
+            lines.append(self._t("mem__thread_gist", text=gist))
         role = str(thread_card.get("my_role") or "").strip().lower()
         if role:
-            lines.append("my role here: " + role)
+            lines.append(self._t("mem__thread_role", role=i18n.label(f"mem__role_{role}", role, self.config.language)))
         if not lines:
             return BrowseMemoryContext(diagnostics=diagnostics)
         diagnostics.usage = "thread_local"
@@ -243,12 +249,12 @@ class HybridSemanticMemoryEngine:
         if not norm_lines and not meme_lines:
             return PostStyleContext(diagnostics=diagnostics)
 
-        lines = ["[COMMUNITY STYLE GUIDE]"]
+        lines = [self._t("mem__style_header")]
         if norm_lines:
-            lines.append("posting style lately: " + ", ".join(norm_lines[:3]))
+            lines.append(self._t("mem__style_norms", items=", ".join(norm_lines[:3])))
         if meme_lines:
-            lines.append("recurring formats: " + ", ".join(meme_lines[:2]))
-        lines.append("use this only for tone and structure, not as a topic list")
+            lines.append(self._t("mem__style_memes", items=", ".join(meme_lines[:2])))
+        lines.append(self._t("mem__style_footer"))
         diagnostics.usage = "style_digest_only"
         return PostStyleContext(rendered_text=self._truncate_block("\n".join(lines), 280), diagnostics=diagnostics)
 
@@ -446,7 +452,7 @@ class HybridSemanticMemoryEngine:
                 "name": "opinion",
                 "cap": 2,
                 "search_kwargs": {
-                    "query_text": self._build_query_text("my previously stated opinion or claim", incoming_text),
+                    "query_text": self._build_query_text(self._t("mem__query_prior_opinion"), incoming_text),
                     "thread_root_id": thread_root_id,
                     "types": ["event", "reflection", "summary"],
                     "round_id": round_id,
@@ -503,12 +509,12 @@ class HybridSemanticMemoryEngine:
                 counts[bucket["name"]] += 1
         if not ordered_items:
             return pack
-        lines = ["[RECALLED MEMORIES]"]
+        lines = [self._t("mem__recall_header")]
         for index, item in enumerate(ordered_items[: self.config.high_affect_max_items], start=1):
             lines.append(
                 f"- [M{index}] ({item['bucket']}, r{item.get('round_id')}, s={float(item.get('score') or 0.0):.2f}) {item['text']}"
             )
-        lines.append("- Reference memory naturally. Never invent events not listed above.")
+        lines.append(self._t("mem__recall_footer"))
         pack["items"] = ordered_items[: self.config.high_affect_max_items]
         pack["counts_by_bucket"] = counts
         pack["has_usable_memories"] = bool(pack["items"])
@@ -755,14 +761,14 @@ class HybridSemanticMemoryEngine:
         maturity = self._digest_maturity_meta(root_posts)
         norms = []
         if maturity["mature"]:
-            norms.append("structured title-plus-body posts")
+            norms.append(self._t("mem__norm_structured"))
             if any("?" in str((row.get("tweet") or "")).split("\n", 1)[0] for row in root_posts):
-                norms.append("question bait titles")
+                norms.append(self._t("mem__norm_question_bait"))
         memes = []
         if any("hot take" in str(row.get("tweet") or "").lower() for row in root_posts):
-            memes.append("hot take framing")
+            memes.append(self._t("mem__meme_hot_take"))
         self._community_digest = {
-            "digest_text": "forum style favors compact title/body text posts",
+            "digest_text": self._t("mem__digest_text"),
             "norms": norms,
             "memes": memes,
             "top_topics": [],
@@ -782,8 +788,8 @@ class HybridSemanticMemoryEngine:
                 item_id=self._item_id,
                 item_type="reflection",
                 round_id=round_id,
-                text="the agent keeps returning to recurring disagreements in this community",
-                text_humanized="the agent keeps returning to recurring disagreements in this community",
+                text=self._t("mem__reflection_text"),
+                text_humanized=self._t("mem__reflection_text"),
                 importance=0.8,
             )
         )
@@ -820,7 +826,7 @@ class HybridSemanticMemoryEngine:
         round_id: int | None,
     ) -> tuple[bool, dict[str, Any] | None]:
         result = self._search(
-            query_text=self._build_query_text("my previously stated opinion or claim", incoming_text),
+            query_text=self._build_query_text(self._t("mem__query_prior_opinion"), incoming_text),
             other_user_id=other_user_id,
             thread_root_id=thread_root_id,
             types=["event", "reflection", "summary"],
@@ -859,6 +865,9 @@ class HybridSemanticMemoryEngine:
         if isinstance(value, list):
             return [str(item) for item in value]
         return []
+
+    def _t(self, key: str, **fields) -> str:
+        return i18n.text(key, self.config.language, **fields)
 
     def _style_phrase_ok(self, value: Any) -> bool:
         phrase = self._style_phrase(value)

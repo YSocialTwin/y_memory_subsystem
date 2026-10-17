@@ -92,6 +92,59 @@ def render() -> dict:
             "continuity": ctx.continuity_text,
             "cues": format_conversation_cues(ctx.cues),
         }
+    out.update(_hybrid())
+    return out
+
+
+def _hybrid() -> dict:
+    from yclient_memory.backends.hybrid_semantic.engine import HybridSemanticMemoryEngine
+    from yclient_memory.contracts import BrowseMemoryRequest, PostStyleRequest
+
+    class RT(_Runtime):
+        posts: list = []
+
+        def get_recent_root_posts(self, *a, **k):
+            return list(self.posts)
+
+    out: dict = {}
+    for role in ("skeptic", "neutral", "other"):
+        rt = RT()
+        eng = HybridSemanticMemoryEngine(config=MemoryConfig(), runtime=rt)
+        eng._social_cards[55] = {
+            "affinity": 0.8, "conflict": 0.2, "humor": 0.1, "trust": 0.4,
+            "summary_text": "usually argue about finales", "last_round_id": 11,
+            "last_thread_root_id": 900,
+        }
+        eng._thread_cards[900] = {"gist_text": "debating whether trauma excuses harm", "my_role": role}
+        eng._record_event(
+            round_id=11, item_type="event", text="pushed back on the idea that grief excuses harm",
+            text_humanized="pushed back on the idea that grief excuses harm", thread_root_id=900,
+            other_user_id=55, relation_label="disagree", tone_label="curious", importance=0.7)
+        random.seed(3)
+        ctx = eng.build_reply_context(ReplyMemoryRequest(
+            query_text="compose a reply", other_user_id=55, other_username="alice",
+            thread_root_id=900, round_id=12))
+        out[f"hybrid|reply|{role}"] = {
+            "rendered": ctx.rendered_text, "continuity": ctx.continuity_text,
+            "cues": ctx.cues.rendered_text}
+        ctx = eng.build_reply_context(ReplyMemoryRequest(
+            query_text="compose a reply", other_user_id=None, thread_root_id=None, round_id=12))
+        out[f"hybrid|reply_nouser|{role}"] = ctx.rendered_text
+        br = eng.build_browse_context(BrowseMemoryRequest(thread_root_id=900, round_id=12))
+        out[f"hybrid|browse|{role}"] = br.rendered_text
+
+    rt = RT()
+    rt.posts = [
+        {"id": i, "user_id": 1 + i % 4, "tweet": f"TITLE: hot take {i}?\n\nbody", "round": i}
+        for i in range(1, 7)
+    ]
+    eng = HybridSemanticMemoryEngine(config=MemoryConfig(), runtime=rt)
+    eng._maybe_update_community_digest(round_id=6)
+    out["hybrid|digest"] = eng._community_digest
+    out["hybrid|style"] = eng.build_post_style_context(PostStyleRequest(round_id=6)).rendered_text
+    eng._events = [object()] * 20
+    eng._maybe_generate_reflections(round_id=6)
+    out["hybrid|reflection"] = [r.text for r in eng._reflections]
     return out
 
 

@@ -63,6 +63,9 @@ package-dir = {"" = "src"}
 [tool.setuptools.dynamic]
 version = {attr = "yclient_memory.__version__"}
 
+[tool.setuptools.package-data]
+yclient_memory = ["prompts/*.json"]
+
 [tool.setuptools.packages.find]
 where = ["src"]
 

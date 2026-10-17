@@ -71,6 +71,44 @@
  "cues|strong|neutral|False|None": "[MEMORY CONVERSATION CUES]\n- scope: strong\n- callback: If natural, reference one prior exchange with this user in one short clause.\n- continuity: with @bob: x\n- argument: Balance agreement and pushback based on the latest claim.\n- tone: Keep it conversational and direct.\n- anecdote: Use anecdotes sparingly; only when they clarify your point.\n- Never invent people, comments, or events not present in memory context.",
  "cues|strong|neutral|True|@Bob": "[MEMORY CONVERSATION CUES]\n- scope: strong\n- callback: If clearly relevant, you may use one brief continuity cue with @Bob.\n- continuity: with @bob: x\n- argument: Balance agreement and pushback based on the latest claim.\n- tone: Keep it conversational and direct.\n- anecdote: Do not import unrelated anecdotes from other threads.\n- Never invent people, comments, or events not present in memory context.",
  "cues|strong|neutral|True|None": "[MEMORY CONVERSATION CUES]\n- scope: strong\n- callback: If clearly relevant, you may use one brief continuity cue with this user.\n- continuity: with @bob: x\n- argument: Balance agreement and pushback based on the latest claim.\n- tone: Keep it conversational and direct.\n- anecdote: Do not import unrelated anecdotes from other threads.\n- Never invent people, comments, or events not present in memory context.",
+ "hybrid|browse|neutral": "[THREAD MEMORY]\nthread gist: debating whether trauma excuses harm\nmy role here: neutral",
+ "hybrid|browse|other": "[THREAD MEMORY]\nthread gist: debating whether trauma excuses harm\nmy role here: other",
+ "hybrid|browse|skeptic": "[THREAD MEMORY]\nthread gist: debating whether trauma excuses harm\nmy role here: skeptic",
+ "hybrid|digest": {
+  "digest_text": "forum style favors compact title/body text posts",
+  "memes": [
+   "hot take framing"
+  ],
+  "norms": [
+   "structured title-plus-body posts",
+   "question bait titles"
+  ],
+  "polarizing_issues": [],
+  "round_id": 6,
+  "top_topics": []
+ },
+ "hybrid|reflection": [
+  "the agent keeps returning to recurring disagreements in this community"
+ ],
+ "hybrid|reply_nouser|neutral": "",
+ "hybrid|reply_nouser|other": "",
+ "hybrid|reply_nouser|skeptic": "",
+ "hybrid|reply|neutral": {
+  "continuity": "with @alice: usually argue about finales | this thread: debating whether trauma excuses harm | earlier here: pushed back on the idea that grief excuses harm",
+  "cues": "[MEMORY CONVERSATION CUES]\n- scope: partial\n- callback: Use only soft continuity and stay anchored to the current thread.\n- continuity: with @alice: usually argue about finales | this thread: debating whether trauma excuses harm | earlier here: pushed back on the idea that grief excuses harm\n- argument: You often align here. Start from common ground, then add a fresh point.\n- tone: Keep it conversational and direct.\n- anecdote: Do not import unrelated anecdotes from other threads.\n- Never invent people, comments, or events not present in memory context.",
+  "rendered": "History with @alice: affinity=0.80, conflict=0.20, humor=0.10, trust=0.40\nContinuity: with @alice: usually argue about finales | this thread: debating whether trauma excuses harm | earlier here: pushed back on the idea that grief excuses harm"
+ },
+ "hybrid|reply|other": {
+  "continuity": "with @alice: usually argue about finales | this thread: debating whether trauma excuses harm | earlier here: pushed back on the idea that grief excuses harm",
+  "cues": "[MEMORY CONVERSATION CUES]\n- scope: partial\n- callback: Use only soft continuity and stay anchored to the current thread.\n- continuity: with @alice: usually argue about finales | this thread: debating whether trauma excuses harm | earlier here: pushed back on the idea that grief excuses harm\n- argument: You often align here. Start from common ground, then add a fresh point.\n- tone: Keep it conversational and direct.\n- anecdote: Do not import unrelated anecdotes from other threads.\n- Never invent people, comments, or events not present in memory context.",
+  "rendered": "History with @alice: affinity=0.80, conflict=0.20, humor=0.10, trust=0.40\nContinuity: with @alice: usually argue about finales | this thread: debating whether trauma excuses harm | earlier here: pushed back on the idea that grief excuses harm"
+ },
+ "hybrid|reply|skeptic": {
+  "continuity": "with @alice: usually argue about finales | this thread: debating whether trauma excuses harm | earlier here: pushed back on the idea that grief excuses harm",
+  "cues": "[MEMORY CONVERSATION CUES]\n- scope: partial\n- callback: Use only soft continuity and stay anchored to the current thread.\n- continuity: with @alice: usually argue about finales | this thread: debating whether trauma excuses harm | earlier here: pushed back on the idea that grief excuses harm\n- argument: You often align here. Start from common ground, then add a fresh point.\n- tone: Keep it conversational and direct.\n- anecdote: Do not import unrelated anecdotes from other threads.\n- Never invent people, comments, or events not present in memory context.",
+  "rendered": "History with @alice: affinity=0.80, conflict=0.20, humor=0.10, trust=0.40\nContinuity: with @alice: usually argue about finales | this thread: debating whether trauma excuses harm | earlier here: pushed back on the idea that grief excuses harm"
+ },
+ "hybrid|style": "[COMMUNITY STYLE GUIDE]\nposting style lately: structured title-plus-body posts, question bait titles\nrecurring formats: hot take framing\nuse this only for tone and structure, not as a topic list",
  "simple_recent|other": {
   "continuity": "History with @alice: affinity=-0.10, conflict=0.50, humor=0.00, trust=0.10 | Continuity: nah your benchmark evidence is weak | if clearly relevant: nah your benchmark evidence is weak",
   "cues": "[MEMORY CONVERSATION CUES]\n- scope: strong\n- callback: If clearly relevant, you may use one brief continuity cue with @alice.\n- continuity: History with @alice: affinity=-0.10, conflict=0.50, humor=0.00, trust=0.10 | Continuity: nah your benchmark evidence is weak | if clearly relevant: nah your benchmark evidence is weak\n- argument: You often clash here. It is fine to continue the argument, but stay concrete.\n- tone: Keep it conversational and direct.\n- anecdote: Do not import unrelated anecdotes from other threads.\n- Never invent people, comments, or events not present in memory context.",
