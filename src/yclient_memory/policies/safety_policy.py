@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import re
 
+from .. import i18n
+
 CALLBACK_STOPWORDS = {
     "about",
     "again",
@@ -66,21 +68,24 @@ def is_vote_artifact(
     return any(token in haystack for token in ("upvote", "downvote", "liked", "vote"))
 
 
-def reply_references_recalled_item(reply_text: str, recalled_items: list[dict]) -> tuple[bool, str]:
+def reply_references_recalled_item(
+    reply_text: str, recalled_items: list[dict], language: str | None = None
+) -> tuple[bool, str]:
     if not isinstance(reply_text, str) or not reply_text.strip():
         return False, "empty_reply"
     if not isinstance(recalled_items, list) or not recalled_items:
         return False, "no_recalled_items"
 
     normalized_reply = re.sub(r"\s+", " ", reply_text).strip().lower()
-    for marker in HIGH_AFFECT_CALLBACK_MARKERS:
-        if marker in normalized_reply:
-            return True, "callback_marker"
+    if i18n.contains_any(normalized_reply, "lex__callback_markers", language):
+        return True, "callback_marker"
+
+    stopwords = i18n.stopwords(language)
 
     reply_tokens = {
         token
-        for token in re.findall(r"[a-z0-9']+", normalized_reply)
-        if len(token) >= 4 and token not in CALLBACK_STOPWORDS
+        for token in i18n.tokens_of(normalized_reply, language)
+        if len(token) >= 4 and token not in stopwords
     }
     if not reply_tokens:
         return False, "no_reply_tokens"
@@ -91,8 +96,8 @@ def reply_references_recalled_item(reply_text: str, recalled_items: list[dict]) 
             continue
         memory_tokens = {
             token
-            for token in re.findall(r"[a-z0-9']+", memory_text)
-            if len(token) >= 4 and token not in CALLBACK_STOPWORDS
+            for token in i18n.tokens_of(memory_text, language)
+            if len(token) >= 4 and token not in stopwords
         }
         if len(reply_tokens.intersection(memory_tokens)) >= 2:
             return True, "keyword_overlap"

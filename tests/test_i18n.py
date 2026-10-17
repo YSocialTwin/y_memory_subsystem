@@ -13,7 +13,9 @@ ROOT = Path(__file__).resolve().parents[1]
 PROTOCOL_TOKENS = ("affinity", "conflict", "humor", "trust")
 
 
-def _fields(template: str) -> set[str]:
+def _fields(template) -> set[str]:
+    if isinstance(template, list):  # lexicons carry words, never fields
+        return set()
     return {name for _, name, _, _ in string.Formatter().parse(template) if name}
 
 
@@ -28,7 +30,10 @@ def test_packs_have_the_same_keys_and_fields_as_english(language):
     other = i18n._load(language)
     assert set(other) == set(en)
     for key, template in en.items():
+        assert type(other[key]) is type(template), key
         assert _fields(other[key]) == _fields(template), key
+        if isinstance(template, list):
+            assert other[key] and all(isinstance(word, str) and word == word.lower() for word in other[key]), key
 
 
 @pytest.mark.parametrize("language", [l for l in i18n.available_languages() if l != "en"])
@@ -160,3 +165,23 @@ def test_engine_logic_does_not_depend_on_the_language(language):
     assert "affinity=0.10, conflict=0.70, humor=0.00, trust=-0.40" in other.rendered_text
     assert other.rendered_text != en.rendered_text
     assert other.cues.argument_hint != en.cues.argument_hint
+
+
+def test_english_lexicons_match_the_historic_hard_coded_lists():
+    assert i18n.lexicon("lex__criticism", "en") == ("wrong", "source", "evidence", "prove", "?")
+    assert i18n.lexicon("lex__s_trust", "en") == ("source", "evidence", "thanks", "good point")
+    assert set(i18n.lexicon("lex__callback_markers", "en")) == {
+        "i remember", "last time", "again with", "you said this", "same argument", "we already did this"}
+
+
+def test_contains_any_matches_word_starts_outside_english():
+    assert i18n.contains_any("ti sbagli di grosso", "lex__disagree", "it")
+    assert not i18n.contains_any("il sincero amico", "lex__anecdote", "it")  # "ero " inside a word
+    assert i18n.contains_any("sconce", "lex__anecdote", "en")  # English keeps plain substrings
+
+
+def test_italian_heuristics_reach_the_english_recall_on_the_corpus():
+    module = runpy.run_path(str(ROOT / "scripts" / "measure_heuristics.py"))
+    result = module["measure"]()
+    failing = {name: row for name, row in result.items() if not row["ok"]}
+    assert not failing, failing

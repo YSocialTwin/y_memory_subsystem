@@ -49,5 +49,104 @@
  "mem__reflection_text": "the agent keeps returning to recurring disagreements in this community",
  "mem__recall_header": "[RECALLED MEMORIES]",
  "mem__recall_footer": "- Reference memory naturally. Never invent events not listed above.",
- "mem__query_prior_opinion": "my previously stated opinion or claim"
+ "mem__query_prior_opinion": "my previously stated opinion or claim",
+ "lex__criticism": [
+  "wrong",
+  "source",
+  "evidence",
+  "prove",
+  "?"
+ ],
+ "lex__conflict": [
+  "wrong",
+  "bullshit",
+  "nonsense",
+  "cope",
+  "argue"
+ ],
+ "lex__anecdote": [
+  "i had",
+  "i was",
+  "my experience",
+  "once"
+ ],
+ "lex__prior": [
+  "last time",
+  "again",
+  "you said this",
+  "same take"
+ ],
+ "lex__disagree": [
+  "wrong",
+  "nah",
+  "disagree"
+ ],
+ "lex__angry": [
+  "wrong",
+  "bullshit"
+ ],
+ "lex__humor_note": [
+  "lol"
+ ],
+ "lex__trust_note": [
+  "source",
+  "evidence"
+ ],
+ "lex__s_affinity": [
+  "agree",
+  "fair",
+  "true",
+  "exactly"
+ ],
+ "lex__s_conflict": [
+  "wrong",
+  "nah",
+  "disagree",
+  "source",
+  "evidence"
+ ],
+ "lex__s_humor": [
+  "lol",
+  "lmao",
+  "joke",
+  "funny"
+ ],
+ "lex__s_trust": [
+  "source",
+  "evidence",
+  "thanks",
+  "good point"
+ ],
+ "lex__callback_markers": [
+  "i remember",
+  "last time",
+  "again with",
+  "you said this",
+  "same argument",
+  "we already did this"
+ ],
+ "lex__stopwords": [
+  "about",
+  "again",
+  "always",
+  "because",
+  "every",
+  "maybe",
+  "still",
+  "their",
+  "there",
+  "thing",
+  "this",
+  "those",
+  "where",
+  "which",
+  "while",
+  "would"
+ ],
+ "lex__skeptic_role": [
+  "wrong"
+ ],
+ "lex__hot_take": [
+  "hot take"
+ ]
 }

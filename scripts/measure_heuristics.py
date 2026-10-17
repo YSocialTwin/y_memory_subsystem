@@ -93,6 +93,18 @@ def measure() -> dict:
     return out
 
 
+def measure_holdout() -> dict:
+    """Italian sentences written after the lexicons, never used to tune them."""
+    holdout = json.loads((ROOT / "tests" / "data" / "heuristics_holdout_it.json").read_text(encoding="utf-8"))
+    out = {}
+    for name, sets in holdout.items():
+        detect = DETECTORS[name]
+        pos = [detect(t, "it") for t in sets["pos"]]
+        neg = [detect(t, "it") for t in sets["neg"]]
+        out[name] = {"recall": sum(pos) / len(pos), "false_positive": sum(neg) / len(neg)}
+    return out
+
+
 def main(argv):
     result = measure()
     if "--json" in argv:
@@ -103,6 +115,9 @@ def main(argv):
             ratio = "-" if r["ratio"] is None else f"{r['ratio']:.2f}"
             print(f"{name:10} {r['en']['recall']:7.2f} {r['it']['recall']:7.2f} {ratio:>6} "
                   f"{r['en']['false_positive']:6.2f} {r['it']['false_positive']:6.2f}  {'yes' if r['ok'] else 'NO'}")
+    print("\nitalian hold-out (not used to build the lexicons)")
+    for name, r in measure_holdout().items():
+        print(f"{name:10} recall {r['recall']:.2f}  false positives {r['false_positive']:.2f}")
     return 0 if all(r["ok"] for r in result.values()) else 1
 
 

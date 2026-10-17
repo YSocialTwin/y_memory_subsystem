@@ -49,5 +49,182 @@
  "mem__reflection_text": "l'agente torna di continuo su disaccordi ricorrenti in questa comunità",
  "mem__recall_header": "[RICORDI RICHIAMATI]",
  "mem__recall_footer": "- Richiama i ricordi in modo naturale. Non inventare mai eventi non elencati sopra.",
- "mem__query_prior_opinion": "la mia opinione o affermazione espressa in precedenza"
+ "mem__query_prior_opinion": "la mia opinione o affermazione espressa in precedenza",
+ "lex__criticism": [
+  "sbagliat",
+  "torto",
+  "fonte",
+  "fonti",
+  "prove",
+  "dimostr",
+  "evidenz",
+  "?"
+ ],
+ "lex__conflict": [
+  "sciocchezz",
+  "assurd",
+  "stronz",
+  "cazzat",
+  "pura scusa",
+  "fatti una ragione",
+  "litig",
+  "discut",
+  "sbagliat",
+  "torto"
+ ],
+ "lex__anecdote": [
+  "ho avuto",
+  "ho dovuto",
+  "avevo",
+  "ero ",
+  "c'ero",
+  "per la mia esperienza",
+  "la mia esperienza",
+  "una volta",
+  "anch'io"
+ ],
+ "lex__prior": [
+  "l'ultima volta",
+  "l'altra volta",
+  "ci risiamo",
+  "di nuovo",
+  "ancora",
+  "lo hai detto",
+  "l'hai già detto",
+  "l'hai detto",
+  "stessa opinione",
+  "stessa idea",
+  "sempre la stessa"
+ ],
+ "lex__disagree": [
+  "sbagliat",
+  "ti sbagli",
+  "dissent",
+  "disaccord",
+  "non sono d'accordo",
+  "non siamo d'accordo",
+  "affatto d'accordo",
+  "macché",
+  "ma no.",
+  "ma no!"
+ ],
+ "lex__angry": [
+  "sbagliat",
+  "stronz"
+ ],
+ "lex__humor_note": [
+  "lol",
+  "ahah",
+  "haha"
+ ],
+ "lex__trust_note": [
+  "fonte",
+  "prove",
+  "evidenz"
+ ],
+ "lex__s_affinity": [
+  "d'accordo",
+  "concordo",
+  "giusto",
+  "vero",
+  "esattamente",
+  "hai ragione"
+ ],
+ "lex__s_conflict": [
+  "sbagliat",
+  "macché",
+  "ma no.",
+  "ma no!",
+  "non sono d'accordo",
+  "non siamo d'accordo",
+  "affatto d'accordo",
+  "dissent",
+  "fonte",
+  "prove",
+  "evidenz"
+ ],
+ "lex__s_humor": [
+  "lol",
+  "lmao",
+  "ahah",
+  "haha",
+  "battuta",
+  "scherz",
+  "divertent",
+  "esilarant"
+ ],
+ "lex__s_trust": [
+  "fonte",
+  "prove",
+  "evidenz",
+  "grazie",
+  "buon punto",
+  "ottimo punto"
+ ],
+ "lex__callback_markers": [
+  "mi ricordo",
+  "mi ricorda",
+  "ricordo che",
+  "l'ultima volta",
+  "l'altra volta",
+  "di nuovo con",
+  "l'hai già detto",
+  "lo hai già detto",
+  "stessa discussione",
+  "stesso argomento",
+  "l'abbiamo già fatt",
+  "ne abbiamo già parlato"
+ ],
+ "lex__stopwords": [
+  "anche",
+  "ancora",
+  "perché",
+  "quando",
+  "quindi",
+  "questo",
+  "questa",
+  "questi",
+  "queste",
+  "quello",
+  "quella",
+  "sempre",
+  "molto",
+  "comunque",
+  "dove",
+  "come",
+  "cosa",
+  "tutto",
+  "tutti",
+  "della",
+  "delle",
+  "degli",
+  "nella",
+  "nelle",
+  "sono",
+  "stato",
+  "essere",
+  "fatto",
+  "hanno",
+  "altro",
+  "altra",
+  "dopo",
+  "prima",
+  "però",
+  "perciò",
+  "ancor",
+  "ogni",
+  "loro",
+  "suoi",
+  "sulla",
+  "sulle"
+ ],
+ "lex__skeptic_role": [
+  "sbagliat",
+  "torto"
+ ],
+ "lex__hot_take": [
+  "hot take",
+  "opinione scomoda",
+  "opinione impopolare"
+ ]
 }

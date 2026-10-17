@@ -53,12 +53,14 @@ def _clip(items: list[_RecentItem], limit: int) -> list[_RecentItem]:
     return items[-limit:]
 
 
-def _relationship_deltas_from_comment(my_text: str, other_text: str) -> tuple[float, float, float, float]:
+def _relationship_deltas_from_comment(
+    my_text: str, other_text: str, language: str | None = None
+) -> tuple[float, float, float, float]:
     text = f"{my_text} {other_text}".lower()
-    affinity = 0.15 if any(token in text for token in ("agree", "fair", "true", "exactly")) else 0.0
-    conflict = 0.25 if any(token in text for token in ("wrong", "nah", "disagree", "source", "evidence")) else 0.0
-    humor = 0.15 if any(token in text for token in ("lol", "lmao", "joke", "funny")) else 0.0
-    trust = 0.10 if any(token in text for token in ("source", "evidence", "thanks", "good point")) else 0.0
+    affinity = 0.15 if i18n.contains_any(text, "lex__s_affinity", language) else 0.0
+    conflict = 0.25 if i18n.contains_any(text, "lex__s_conflict", language) else 0.0
+    humor = 0.15 if i18n.contains_any(text, "lex__s_humor", language) else 0.0
+    trust = 0.10 if i18n.contains_any(text, "lex__s_trust", language) else 0.0
     if conflict > 0.0:
         affinity -= 0.05
         trust -= 0.05
@@ -193,7 +195,9 @@ class SimpleRecentMemoryEngine:
         )
 
         state = self._relationships[event.other_user_id]
-        affinity, conflict, humor, trust = _relationship_deltas_from_comment(event.my_text, event.other_text)
+        affinity, conflict, humor, trust = _relationship_deltas_from_comment(
+            event.my_text, event.other_text, self.config.language
+        )
         state.affinity += affinity
         state.conflict += conflict
         state.humor += humor

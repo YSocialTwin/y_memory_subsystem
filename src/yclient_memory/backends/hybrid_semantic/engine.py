@@ -27,7 +27,6 @@ from ...policies.affect_policy import detect_high_affect_signal as detect_high_a
 from ... import i18n
 from ...policies.prompt_policy import build_conversation_cues, format_conversation_cues
 from ...policies.safety_policy import (
-    CALLBACK_STOPWORDS,
     is_vote_artifact,
     reply_references_recalled_item,
     sanitize_prompt_memory_text,
@@ -409,6 +408,7 @@ class HybridSemanticMemoryEngine:
                 },
             )
         signal = detect_high_affect_signal_policy(
+            language=self.config.language,
             incoming_text=incoming_text,
             prior_match=prior_match,
             llm_classifier=llm_fallback,
@@ -522,7 +522,7 @@ class HybridSemanticMemoryEngine:
         return pack
 
     def reply_references_recalled_item(self, reply_text: str, recalled_items: list[dict]) -> tuple[bool, str]:
-        return reply_references_recalled_item(reply_text, recalled_items)
+        return reply_references_recalled_item(reply_text, recalled_items, self.config.language)
 
     def validate_structured_post_text(self, text_value: str) -> dict[str, Any]:
         parsed = self._parse_root_post_text(text_value)
@@ -679,10 +679,11 @@ class HybridSemanticMemoryEngine:
         return score
 
     def _search_tokens(self, text: str) -> set[str]:
+        stopwords = i18n.stopwords(self.config.language)
         return {
             token
-            for token in re.findall(r"[a-z0-9']+", str(text or "").lower())
-            if len(token) >= 3 and token not in CALLBACK_STOPWORDS
+            for token in i18n.tokens_of(str(text or "").lower(), self.config.language)
+            if len(token) >= 3 and token not in stopwords
         }
 
     def _record_event(
@@ -748,7 +749,9 @@ class HybridSemanticMemoryEngine:
         participants = sorted(set(re.findall(r"@([A-Za-z0-9_]+)", conv_text or "")))[:6]
         self._thread_cards[thread_root_id] = {
             "gist_text": truncate(gist_text, 500),
-            "my_role": "skeptic" if "wrong" in (conv_text or "").lower() else "neutral",
+            "my_role": "skeptic"
+            if i18n.contains_any((conv_text or "").lower(), "lex__skeptic_role", self.config.language)
+            else "neutral",
             "participants_top": participants,
             "entry_points": [],
             "last_seen_round_id": round_id,
@@ -765,7 +768,10 @@ class HybridSemanticMemoryEngine:
             if any("?" in str((row.get("tweet") or "")).split("\n", 1)[0] for row in root_posts):
                 norms.append(self._t("mem__norm_question_bait"))
         memes = []
-        if any("hot take" in str(row.get("tweet") or "").lower() for row in root_posts):
+        if any(
+            i18n.contains_any(str(row.get("tweet") or "").lower(), "lex__hot_take", self.config.language)
+            for row in root_posts
+        ):
             memes.append(self._t("mem__meme_hot_take"))
         self._community_digest = {
             "digest_text": self._t("mem__digest_text"),
@@ -807,13 +813,15 @@ class HybridSemanticMemoryEngine:
 
     def _heuristic_interaction_note(self, other_text: str, my_text: str) -> dict[str, Any]:
         text = f"{other_text} {my_text}".lower()
+        lang = self.config.language
+        disagree = i18n.contains_any(text, "lex__disagree", lang)
         return {
-            "relation_label": "disagree" if any(token in text for token in ("wrong", "nah", "disagree")) else "neutral",
-            "tone_label": "angry" if any(token in text for token in ("wrong", "bullshit")) else "curious",
-            "affinity_delta": -0.05 if "wrong" in text else 0.05,
-            "conflict_delta": 0.30 if any(token in text for token in ("wrong", "nah", "disagree")) else 0.0,
-            "humor_delta": 0.1 if "lol" in text else 0.0,
-            "trust_delta": 0.1 if "source" in text or "evidence" in text else 0.0,
+            "relation_label": "disagree" if disagree else "neutral",
+            "tone_label": "angry" if i18n.contains_any(text, "lex__angry", lang) else "curious",
+            "affinity_delta": -0.05 if i18n.contains_any(text, "lex__skeptic_role", lang) else 0.05,
+            "conflict_delta": 0.30 if disagree else 0.0,
+            "humor_delta": 0.1 if i18n.contains_any(text, "lex__humor_note", lang) else 0.0,
+            "trust_delta": 0.1 if i18n.contains_any(text, "lex__trust_note", lang) else 0.0,
             "salient_claim": sanitize_prompt_memory_text(my_text or other_text, 200),
         }
 
@@ -904,10 +912,11 @@ class HybridSemanticMemoryEngine:
             if value:
                 entities.append(value)
         title = (parsed.get("title") or "").lower()
+        stopwords = i18n.stopwords(self.config.language)
         tokens = [
             token
-            for token in re.findall(r"[a-z0-9]+", combined)
-            if len(token) >= 3 and token not in CALLBACK_STOPWORDS
+            for token in i18n.tokens_of(combined, self.config.language, apostrophe=False)
+            if len(token) >= 3 and token not in stopwords
         ]
         return {"title": title, "tokens": tokens[:24], "entities": entities[:4], "combined": combined}
 
