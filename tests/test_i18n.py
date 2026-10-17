@@ -73,3 +73,90 @@ def test_cues_follow_the_requested_language_for_every_available_pack():
         )
         text = format_conversation_cues(cues, language=language)
         assert text.startswith(i18n.get("cue__header", language))
+
+
+@pytest.mark.parametrize("language", i18n.available_languages())
+def test_worst_case_cue_block_fits_the_character_limit(language):
+    long_continuity = "x" * MemoryConfig().reply_context_max_chars
+    cues = build_conversation_cues(
+        memory_text="affinity=0.0, conflict=0.6, humor=0.0, trust=-0.3",
+        memory_meta={
+            "retrieved_item_count": 3,
+            "top_score": 0.9,
+            "cross_thread_callback_candidate": True,
+            "continuity_text": long_continuity,
+        },
+        subtle_mode=False,
+        target_username="@" + "u" * 20,
+        language=language,
+    )
+    raw = format_conversation_cues(cues, max_chars=10_000, language=language)
+    limit = MemoryConfig().nuance_cues_max_chars
+    assert len(raw) <= limit, f"{language}: {len(raw)} > {limit} chars, the cues would be truncated"
+
+
+@pytest.mark.parametrize("language", i18n.available_languages())
+def test_style_phrases_stay_within_the_phrase_limit(language):
+    for key in ("mem__norm_structured", "mem__norm_question_bait", "mem__meme_hot_take"):
+        assert len(i18n.get(key, language)) <= 48, key
+
+
+@pytest.mark.parametrize("language", i18n.available_languages())
+def test_thread_and_style_blocks_fit_without_truncation(language):
+    def t(key, **fields):
+        return i18n.text(key, language, **fields)
+
+    thread = "\n".join(
+        [
+            t("mem__thread_header"),
+            t("mem__thread_gist", text="g" * 160),
+            t("mem__thread_role", role=i18n.label("mem__role_skeptic", "skeptic", language)),
+        ]
+    )
+    style = "\n".join(
+        [
+            t("mem__style_header"),
+            t("mem__style_norms", items=", ".join([t("mem__norm_structured"), t("mem__norm_question_bait")])),
+            t("mem__style_memes", items=t("mem__meme_hot_take")),
+            t("mem__style_footer"),
+        ]
+    )
+    assert len(thread) <= 220
+    assert len(style) <= 280
+
+
+@pytest.mark.parametrize("language", [l for l in i18n.available_languages() if l != "en"])
+def test_engine_logic_does_not_depend_on_the_language(language):
+    from yclient_memory.backends.hybrid_semantic.engine import HybridSemanticMemoryEngine
+    from yclient_memory.contracts import ReplyMemoryRequest
+
+    class RT:
+        def llm_json(self, *a, **k):
+            return {}
+
+        def llm_text(self, *a, **k):
+            return ""
+
+        def get_recent_root_posts(self, *a, **k):
+            return []
+
+        def decision_log(self, payload):
+            pass
+
+    def run(lang):
+        engine = HybridSemanticMemoryEngine(config=MemoryConfig(language=lang), runtime=RT())
+        engine._social_cards[55] = {
+            "affinity": 0.1, "conflict": 0.7, "humor": 0.0, "trust": -0.4,
+            "summary_text": "ciao", "last_round_id": 1, "last_thread_root_id": 9,
+        }
+        ctx = engine.build_reply_context(
+            ReplyMemoryRequest(query_text="q", other_user_id=55, other_username="alice", thread_root_id=9, round_id=2)
+        )
+        return ctx
+
+    en, other = run("en"), run(language)
+    assert en.cues.scope == other.cues.scope
+    assert en.cues.should_callback == other.cues.should_callback
+    assert "affinity=0.10, conflict=0.70, humor=0.00, trust=-0.40" in other.rendered_text
+    assert other.rendered_text != en.rendered_text
+    assert other.cues.argument_hint != en.cues.argument_hint
