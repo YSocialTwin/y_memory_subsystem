@@ -10,6 +10,7 @@ nav:
   - Overview: index.md
   - Features: features.md
   - API Surface: api.md
+  - Languages: languages.md
   - Backends:
       - Backend Matrix: backend_matrix.md
       - Hybrid Semantic: backends/hybrid_semantic.md

@@ -55,6 +55,13 @@ Core operations:
 - `relationship_signal()`
 - `maintenance_tick()`
 
+## Languages
+
+The texts shown to the language model come from language packs (`en` and `it`):
+`MemoryConfig(language="it")`. English is the default and is unchanged; a missing
+language or key falls back to English with one warning. See [docs/languages.md](docs/languages.md),
+including how to add a language.
+
 ## Backends
 
 `hybrid_semantic`
