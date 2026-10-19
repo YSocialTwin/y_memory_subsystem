@@ -6,5 +6,6 @@
   "authors": [
     "YSocialTwin"
   ],
-  "repository_url": "https://github.com/YSocialTwin/y_memory_subsystem"
+  "repository_url": "https://github.com/YSocialTwin/y_memory_subsystem",
+  "license": "GPL-3.0-only"
 }

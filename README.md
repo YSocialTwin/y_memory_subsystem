@@ -1,18 +1,35 @@
-# y_memory_subsystem (`yclient-memory`)
+# y_memory_subsystem
 
-This repository is the YSocial plugin **y_memory_subsystem**; it is published as the `yclient-memory` Python package.
+> Gives simulated agents a memory of past interactions: relationship history, thread continuity and conversation cues used when they reply.
 
-`yclient-memory` is an in-tree implementation of the external memory package described in
-[`external_memory_package_pipeline.md`](https://github.com/YSocialTwin/y_memory_subsystem/blob/main/external_memory_package_pipeline.md).
+## Overview
 
-It provides:
+This repository is the YSocial plugin **y_memory_subsystem**, published as the `yclient-memory` Python package. In [YSocial](https://github.com/YSocialTwin/YSocial) it is installed and updated from the *Plugins* page of the admin panel. It is an in-tree implementation of the external memory package described in [`external_memory_package_pipeline.md`](external_memory_package_pipeline.md).
+
+## Features
 
 - a stable `yclient_memory` import surface
 - shared contracts and runtime protocols
 - a `build_memory_engine()` factory
-- two interchangeable backends:
-  - `hybrid_semantic`
-  - `simple_recent`
+- two interchangeable backends: `hybrid_semantic` and `simple_recent`
+- language packs for the texts shown to the language model (`en`, `it`)
+
+**`hybrid_semantic`**
+
+- preserves the richer Reddit-style behavior
+- tracks social cards, thread cards, community digest, and reflections
+- supports semantic-style lexical retrieval, high-affect recall, and post-style guidance
+
+**`simple_recent`**
+
+- keeps deterministic recent interaction state only
+- exposes the same engine signature with fewer capabilities
+- is suitable for lower-dependency adoption in other clients
+
+## Requirements
+
+- Python 3.9 or later
+- A runtime adapter provided by the client that uses the package (see [Runtime adapter](#runtime-adapter))
 
 ## Installation
 
@@ -22,7 +39,15 @@ From PyPI, once published:
 pip install yclient-memory
 ```
 
-## Quick Start
+From a checkout:
+
+```bash
+git clone https://github.com/YSocialTwin/y_memory_subsystem.git
+cd y_memory_subsystem
+python -m pip install .
+```
+
+## Usage
 
 ```python
 from yclient_memory import build_memory_engine
@@ -35,7 +60,7 @@ memory = build_memory_engine(
 )
 ```
 
-## Public API
+### Public API
 
 ```python
 from yclient_memory import build_memory_engine
@@ -57,31 +82,10 @@ Core operations:
 - `relationship_signal()`
 - `maintenance_tick()`
 
-## Languages
-
-The texts shown to the language model come from language packs (`en` and `it`):
-`MemoryConfig(language="it")`. English is the default and is unchanged; a missing
-language or key falls back to English with one warning. See [docs/languages.md](docs/languages.md),
-including how to add a language.
-
-## Backends
-
-`hybrid_semantic`
-
-- preserves the richer Reddit-style behavior
-- tracks social cards, thread cards, community digest, and reflections
-- supports semantic-style lexical retrieval, high-affect recall, and post-style guidance
-
-`simple_recent`
-
-- keeps deterministic recent interaction state only
-- exposes the same engine signature with fewer capabilities
-- is suitable for lower-dependency adoption in other clients
-
-## Runtime Adapter
+### Runtime adapter
 
 The package expects a runtime object with the methods documented in
-[`docs/runtime_adapter.md`](https://github.com/YSocialTwin/y_memory_subsystem/blob/main/docs/runtime_adapter.md).
+[`docs/runtime_adapter.md`](docs/runtime_adapter.md).
 
 At minimum, backends depend on:
 
@@ -93,20 +97,36 @@ At minimum, backends depend on:
 - `llm_text(prompt_key, variables, config=None)`
 - `decision_log(payload)`
 
-## Notebooks
+### Notebooks
 
 Example walkthroughs live in:
 
-- [`output/jupyter-notebook/hybrid-semantic-memory-walkthrough.ipynb`](https://github.com/YSocialTwin/y_memory_subsystem/blob/main/output/jupyter-notebook/hybrid-semantic-memory-walkthrough.ipynb)
-- [`output/jupyter-notebook/simple-recent-memory-walkthrough.ipynb`](https://github.com/YSocialTwin/y_memory_subsystem/blob/main/output/jupyter-notebook/simple-recent-memory-walkthrough.ipynb)
+- [`output/jupyter-notebook/hybrid-semantic-memory-walkthrough.ipynb`](output/jupyter-notebook/hybrid-semantic-memory-walkthrough.ipynb)
+- [`output/jupyter-notebook/simple-recent-memory-walkthrough.ipynb`](output/jupyter-notebook/simple-recent-memory-walkthrough.ipynb)
 
-## Development
+## Configuration
+
+Engines are configured with `MemoryConfig`, for instance `MemoryConfig.from_mapping({"memory_vote_signal_only": True})`.
+
+### Languages
+
+The texts shown to the language model come from language packs (`en` and `it`):
+`MemoryConfig(language="it")`. English is the default and is unchanged; a missing
+language or key falls back to English with one warning. See [docs/languages.md](docs/languages.md),
+including how to add a language.
+
+## Documentation
+
+- Repository documentation (MkDocs) in [`docs/`](docs): [API](docs/api.md), [backends matrix](docs/backend_matrix.md), [runtime adapter](docs/runtime_adapter.md), [languages](docs/languages.md), [release pipeline](docs/release_pipeline.md)
+- Preview it with `uv run --with mkdocs-material mkdocs serve`; strict build with `uv run --with mkdocs-material mkdocs build --strict`
+
+## Testing
 
 ```bash
 python -m pytest
 ```
 
-## Packaging And Release
+## Packaging and release
 
 Build locally:
 
@@ -118,19 +138,30 @@ python -m twine check dist/*
 
 The repository also includes GitHub Actions workflows for package validation and PyPI publishing:
 
-- [package.yml](https://github.com/YSocialTwin/y_memory_subsystem/blob/main/.github/workflows/package.yml)
-- [publish-pypi.yml](https://github.com/YSocialTwin/y_memory_subsystem/blob/main/.github/workflows/publish-pypi.yml)
+- [package.yml](.github/workflows/package.yml)
+- [publish-pypi.yml](.github/workflows/publish-pypi.yml)
 
-Release details are documented in [docs/release_pipeline.md](https://github.com/YSocialTwin/y_memory_subsystem/blob/main/docs/release_pipeline.md).
+Release details are documented in [docs/release_pipeline.md](docs/release_pipeline.md).
 
-## MkDocs
+## Contributing
 
-```bash
-uv run --with mkdocs-material mkdocs serve
+Contributions are welcome. Fork the repository, create a branch for your change and open a pull request describing it. Run the tests before opening a pull request.
+
+## Citation
+
+If you use YSocial in your research, please cite:
+
+```bibtex
+@article{rossetti2024ysocial,
+  title={Y Social: an LLM-powered microblogging Digital Twin},
+  author={Rossetti, Giulio and Stella, Massimo and Cazabet, Rémy and
+  Abramski, Katherine and Cau, Erica and Citraro, Salvatore and
+  Failla, Andrea and Improta, Riccardo and Morini, Virginia and
+  Pansanella, Virginia},
+  year={2024}
+}
 ```
 
-Strict build:
+## License
 
-```bash
-uv run --with mkdocs-material mkdocs build --strict
-```
+Released under the GNU General Public License v3.0. See [LICENSE](LICENSE) for details.

@@ -6,7 +6,7 @@ This repository is prepared to build a pip-installable package and publish it to
 
 - enriched package metadata in [`pyproject.toml`](../pyproject.toml)
 - source-distribution manifest in [`MANIFEST.in`](../MANIFEST.in)
-- MIT license file in [`LICENSE`](../LICENSE)
+- GPL-3.0 license file in [`LICENSE`](../LICENSE)
 - validation workflow in [package.yml](../.github/workflows/package.yml)
 - publishing workflow in [publish-pypi.yml](../.github/workflows/publish-pypi.yml)
 
