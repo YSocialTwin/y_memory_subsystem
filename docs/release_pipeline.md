@@ -4,11 +4,11 @@ This repository is prepared to build a pip-installable package and publish it to
 
 ## What Was Added
 
-- enriched package metadata in [`pyproject.toml`](/Users/rossetti/PycharmProjects/y_memory_subsystem/pyproject.toml)
-- source-distribution manifest in [`MANIFEST.in`](/Users/rossetti/PycharmProjects/y_memory_subsystem/MANIFEST.in)
-- MIT license file in [`LICENSE`](/Users/rossetti/PycharmProjects/y_memory_subsystem/LICENSE)
-- validation workflow in [package.yml](/Users/rossetti/PycharmProjects/y_memory_subsystem/.github/workflows/package.yml)
-- publishing workflow in [publish-pypi.yml](/Users/rossetti/PycharmProjects/y_memory_subsystem/.github/workflows/publish-pypi.yml)
+- enriched package metadata in [`pyproject.toml`](../pyproject.toml)
+- source-distribution manifest in [`MANIFEST.in`](../MANIFEST.in)
+- MIT license file in [`LICENSE`](../LICENSE)
+- validation workflow in [package.yml](../.github/workflows/package.yml)
+- publishing workflow in [publish-pypi.yml](../.github/workflows/publish-pypi.yml)
 
 ## Local Build Commands
 
@@ -68,7 +68,7 @@ The workflow also accepts `PYPI_API_TOKEN` as a fallback secret through the acti
 
 ## Release Steps
 
-1. update [`src/yclient_memory/__init__.py`](/Users/rossetti/PycharmProjects/y_memory_subsystem/src/yclient_memory/__init__.py) version
+1. update [`src/yclient_memory/__init__.py`](../src/yclient_memory/__init__.py) version
 2. ensure `pytest -q` passes
 3. ensure `python -m build` and `twine check dist/*` pass locally
 4. commit and tag the release
@@ -79,6 +79,6 @@ The workflow also accepts `PYPI_API_TOKEN` as a fallback secret through the acti
 
 The published package version is taken from:
 
-- [`src/yclient_memory/__init__.py`](/Users/rossetti/PycharmProjects/y_memory_subsystem/src/yclient_memory/__init__.py)
+- [`src/yclient_memory/__init__.py`](../src/yclient_memory/__init__.py)
 
-via setuptools dynamic versioning configured in [`pyproject.toml`](/Users/rossetti/PycharmProjects/y_memory_subsystem/pyproject.toml).
+via setuptools dynamic versioning configured in [`pyproject.toml`](../pyproject.toml).

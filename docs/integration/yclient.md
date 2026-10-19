@@ -6,8 +6,7 @@ Adopt the same package in `YClient` while mapping its timeline/post model into t
 
 Reference files:
 
-- `/Users/rossetti/PycharmProjects/YClient/y_client/classes/base_agent.py`
-- `/Users/rossetti/PycharmProjects/YClient/docs/memory_subsystem_integration_plan.md`
+- `../../../YClient/y_client/classes/base_agent.py`
 
 ## Recommended rollout
 

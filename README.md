@@ -1,4 +1,6 @@
-# yclient-memory
+# y_memory_subsystem (`yclient-memory`)
+
+This repository is the YSocial plugin **y_memory_subsystem**; it is published as the `yclient-memory` Python package.
 
 `yclient-memory` is an in-tree implementation of the external memory package described in
 [`external_memory_package_pipeline.md`](https://github.com/YSocialTwin/y_memory_subsystem/blob/main/external_memory_package_pipeline.md).
