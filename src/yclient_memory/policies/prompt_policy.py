@@ -3,6 +3,7 @@ from __future__ import annotations
 import random
 import re
 
+from .. import i18n
 from ..contracts import MemoryCueSet
 
 
@@ -25,6 +26,7 @@ def build_conversation_cues(
     nuance_enabled: bool = True,
     min_score: float = 0.35,
     callback_probability: float = 0.55,
+    language: str | None = None,
 ) -> MemoryCueSet:
     if not nuance_enabled:
         return MemoryCueSet()
@@ -56,7 +58,10 @@ def build_conversation_cues(
     humor = _extract_metric(memory_text, "humor")
     trust = _extract_metric(memory_text, "trust")
 
-    target = f"@{str(target_username or '').lstrip('@')}" if target_username else "this user"
+    def t(key: str, **fields) -> str:
+        return i18n.text(key, language, **fields)
+
+    target = f"@{str(target_username or '').lstrip('@')}" if target_username else t("cue__target_fallback")
     should_callback = False
     if scope == "strong" and cross_thread_callback_candidate:
         should_callback = random.random() <= callback_probability
@@ -64,42 +69,42 @@ def build_conversation_cues(
         should_callback = random.random() <= min(0.25, callback_probability * 0.4)
 
     if scope == "degraded":
-        callback_hint = "Memory retrieval is degraded right now. Do not claim specific past interactions."
+        callback_hint = t("cue__callback_degraded")
     elif scope == "cold_start":
-        callback_hint = "You have limited interaction history. Focus on the current content."
+        callback_hint = t("cue__callback_cold_start")
     elif subtle_mode and cross_thread_callback_candidate:
-        callback_hint = f"If clearly relevant, you may use one brief continuity cue with {target}."
+        callback_hint = t("cue__callback_subtle", target=target)
     elif should_callback:
-        callback_hint = f"If natural, reference one prior exchange with {target} in one short clause."
+        callback_hint = t("cue__callback_natural", target=target)
     elif scope == "partial":
-        callback_hint = "Use only soft continuity and stay anchored to the current thread."
+        callback_hint = t("cue__callback_partial")
     else:
-        callback_hint = "No memory callback needed; focus on the current message."
+        callback_hint = t("cue__callback_none")
 
     if conflict - affinity >= 0.2:
-        argument_hint = "You often clash here. It is fine to continue the argument, but stay concrete."
+        argument_hint = t("cue__argument_clash")
     elif affinity - conflict >= 0.2:
-        argument_hint = "You often align here. Start from common ground, then add a fresh point."
+        argument_hint = t("cue__argument_align")
     else:
-        argument_hint = "Balance agreement and pushback based on the latest claim."
+        argument_hint = t("cue__argument_balance")
 
     if degraded_mode:
-        tone_hint = "Keep tone grounded in the current thread; avoid certainty from memory."
+        tone_hint = t("cue__tone_degraded")
     elif trust <= -0.2 or conflict >= 0.55:
-        tone_hint = "Keep a skeptical tone; ask for specifics or challenge weak claims."
+        tone_hint = t("cue__tone_skeptical")
     elif humor >= 0.25 and trust >= 0.0:
-        tone_hint = "Light banter is okay if it helps the point land."
+        tone_hint = t("cue__tone_banter")
     else:
-        tone_hint = "Keep it conversational and direct."
+        tone_hint = t("cue__tone_default")
 
     if subtle_mode:
-        anecdote_hint = "Do not import unrelated anecdotes from other threads."
+        anecdote_hint = t("cue__anecdote_subtle")
     elif should_callback and (trust >= 0.15 or humor >= 0.25):
-        anecdote_hint = "A tiny shared-memory anecdote is fine, but only if it is clearly supported."
+        anecdote_hint = t("cue__anecdote_supported")
     elif conflict >= 0.5:
-        anecdote_hint = "Prefer argument continuity over personal anecdotes."
+        anecdote_hint = t("cue__anecdote_argument")
     else:
-        anecdote_hint = "Use anecdotes sparingly; only when they clarify your point."
+        anecdote_hint = t("cue__anecdote_default")
 
     return MemoryCueSet(
         scope=scope,
@@ -117,24 +122,27 @@ def build_conversation_cues(
     )
 
 
-def format_conversation_cues(cues: MemoryCueSet, max_chars: int = 900) -> str:
+def format_conversation_cues(cues: MemoryCueSet, max_chars: int = 900, language: str | None = None) -> str:
     if cues.scope == "none" and not cues.extra.get("retrieved_item_count") and not cues.extra.get("degraded_mode"):
         return ""
+    def t(key: str, **fields) -> str:
+        return i18n.text(key, language, **fields)
+
     lines = [
-        "[MEMORY CONVERSATION CUES]",
-        f"- scope: {cues.scope}",
+        t("cue__header"),
+        t("cue__line_scope", value=cues.scope),
     ]
     if cues.callback_hint:
-        lines.append(f"- callback: {cues.callback_hint}")
+        lines.append(t("cue__line_callback", value=cues.callback_hint))
     if cues.continuity_hint:
-        lines.append(f"- continuity: {cues.continuity_hint}")
+        lines.append(t("cue__line_continuity", value=cues.continuity_hint))
     if cues.argument_hint:
-        lines.append(f"- argument: {cues.argument_hint}")
+        lines.append(t("cue__line_argument", value=cues.argument_hint))
     if cues.tone_hint:
-        lines.append(f"- tone: {cues.tone_hint}")
+        lines.append(t("cue__line_tone", value=cues.tone_hint))
     if cues.anecdote_hint:
-        lines.append(f"- anecdote: {cues.anecdote_hint}")
-    lines.append("- Never invent people, comments, or events not present in memory context.")
+        lines.append(t("cue__line_anecdote", value=cues.anecdote_hint))
+    lines.append(t("cue__footer"))
     text = "\n".join(lines)
     if len(text) > max_chars:
         text = text[: max_chars - 3].rstrip() + "..."

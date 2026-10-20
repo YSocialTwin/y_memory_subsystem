@@ -1,0 +1,596 @@
+{
+ "criticism": {
+  "pos": [
+   [
+    "That claim is wrong.",
+    "Questa affermazione è sbagliata."
+   ],
+   [
+    "Where is your source for that?",
+    "Qual è la tua fonte per questo?"
+   ],
+   [
+    "Show me the evidence.",
+    "Mostrami le prove."
+   ],
+   [
+    "Prove it.",
+    "Dimostralo."
+   ],
+   [
+    "Are you sure about that?",
+    "Ne sei sicuro?"
+   ],
+   [
+    "You have no evidence at all.",
+    "Non hai nessuna prova."
+   ],
+   [
+    "Cite a source or drop it.",
+    "Cita una fonte o lascia perdere."
+   ],
+   [
+    "That is simply wrong, check again.",
+    "È semplicemente sbagliato, ricontrolla."
+   ],
+   [
+    "Can you prove that number?",
+    "Puoi dimostrare quel numero?"
+   ],
+   [
+    "What evidence supports this?",
+    "Quali prove sostengono questo?"
+   ]
+  ],
+  "neg": [
+   [
+    "I love this community.",
+    "Adoro questa comunità."
+   ],
+   [
+    "Nice weather today.",
+    "Bel tempo oggi."
+   ],
+   [
+    "Thanks for sharing the photos.",
+    "Grazie per aver condiviso le foto."
+   ],
+   [
+    "See you tomorrow.",
+    "Ci vediamo domani."
+   ],
+   [
+    "This recipe is delicious.",
+    "Questa ricetta è deliziosa."
+   ]
+  ]
+ },
+ "conflict": {
+  "pos": [
+   [
+    "This is complete nonsense.",
+    "Questa è una sciocchezza totale."
+   ],
+   [
+    "What a load of bullshit.",
+    "Che mucchio di stronzate."
+   ],
+   [
+    "Stop trying to argue with everyone.",
+    "Smettila di litigare con tutti."
+   ],
+   [
+    "Total cope from you.",
+    "Pura scusa la tua."
+   ],
+   [
+    "You are wrong again.",
+    "Hai di nuovo torto."
+   ],
+   [
+    "That take is nonsense.",
+    "Questa opinione è assurda."
+   ],
+   [
+    "I refuse to argue about this.",
+    "Mi rifiuto di discutere su questo."
+   ],
+   [
+    "Pure bullshit, nobody believes it.",
+    "Stronzate pure, nessuno ci crede."
+   ],
+   [
+    "You always argue for nothing.",
+    "Litighi sempre per niente."
+   ],
+   [
+    "Cope harder.",
+    "Fatti una ragione."
+   ]
+  ],
+  "neg": [
+   [
+    "Great point, thanks.",
+    "Ottimo punto, grazie."
+   ],
+   [
+    "Happy birthday!",
+    "Buon compleanno!"
+   ],
+   [
+    "The match starts at nine.",
+    "La partita inizia alle nove."
+   ],
+   [
+    "I agree with you.",
+    "Sono d'accordo con te."
+   ],
+   [
+    "Good morning everyone.",
+    "Buongiorno a tutti."
+   ]
+  ]
+ },
+ "anecdote": {
+  "pos": [
+   [
+    "I had the same problem last year.",
+    "Ho avuto lo stesso problema l'anno scorso."
+   ],
+   [
+    "I was there when it happened.",
+    "Io c'ero quando è successo."
+   ],
+   [
+    "In my experience this never works.",
+    "Per la mia esperienza questo non funziona mai."
+   ],
+   [
+    "Once I tried it and failed.",
+    "Una volta l'ho provato e ho fallito."
+   ],
+   [
+    "I had a friend who did this.",
+    "Avevo un amico che lo faceva."
+   ],
+   [
+    "I was in that city in 2019.",
+    "Ero in quella città nel 2019."
+   ],
+   [
+    "My experience with them was bad.",
+    "La mia esperienza con loro è stata pessima."
+   ],
+   [
+    "Once, a colleague told me the same.",
+    "Una volta un collega mi ha detto lo stesso."
+   ],
+   [
+    "I had to quit because of it.",
+    "Ho dovuto smettere per questo."
+   ],
+   [
+    "I was skeptical too at first.",
+    "Anch'io all'inizio ero scettico."
+   ]
+  ],
+  "neg": [
+   [
+    "The report is due on Friday.",
+    "La relazione è in scadenza venerdì."
+   ],
+   [
+    "This phone has a great camera.",
+    "Questo telefono ha una fotocamera ottima."
+   ],
+   [
+    "Please share the link.",
+    "Condividi il link, per favore."
+   ],
+   [
+    "Where is the station?",
+    "Dov'è la stazione?"
+   ],
+   [
+    "Lunch at noon.",
+    "Pranzo a mezzogiorno."
+   ]
+  ]
+ },
+ "prior": {
+  "pos": [
+   [
+    "Last time you said the opposite.",
+    "L'ultima volta hai detto il contrario."
+   ],
+   [
+    "Here we go again.",
+    "Ci risiamo."
+   ],
+   [
+    "You said this before, same take.",
+    "L'hai già detto, stessa opinione."
+   ],
+   [
+    "Again with the same argument?",
+    "Di nuovo con lo stesso argomento?"
+   ],
+   [
+    "Same take as always.",
+    "Sempre la stessa opinione."
+   ],
+   [
+    "Last time we agreed on this.",
+    "L'altra volta eravamo d'accordo su questo."
+   ],
+   [
+    "You said this yesterday too.",
+    "Lo hai detto anche ieri."
+   ],
+   [
+    "Again? We covered this.",
+    "Ancora? Ne abbiamo già parlato."
+   ],
+   [
+    "This is the same take from last week.",
+    "È la stessa opinione della settimana scorsa."
+   ],
+   [
+    "You are repeating what you said last time.",
+    "Stai ripetendo quello che hai detto l'altra volta."
+   ]
+  ],
+  "neg": [
+   [
+    "What a lovely garden.",
+    "Che bel giardino."
+   ],
+   [
+    "The train is late.",
+    "Il treno è in ritardo."
+   ],
+   [
+    "I like jazz.",
+    "Mi piace il jazz."
+   ],
+   [
+    "It is raining.",
+    "Sta piovendo."
+   ],
+   [
+    "New release tomorrow.",
+    "Nuova uscita domani."
+   ]
+  ]
+ },
+ "disagree": {
+  "pos": [
+   [
+    "I disagree with that.",
+    "Non sono d'accordo con questo."
+   ],
+   [
+    "Nah, that is not how it works.",
+    "Macché, non funziona così."
+   ],
+   [
+    "You are wrong about this.",
+    "Ti sbagli su questo."
+   ],
+   [
+    "I strongly disagree.",
+    "Non sono affatto d'accordo."
+   ],
+   [
+    "Nah.",
+    "Ma no."
+   ],
+   [
+    "That is wrong.",
+    "Questo è sbagliato."
+   ],
+   [
+    "We disagree on the facts.",
+    "Non siamo d'accordo sui fatti."
+   ],
+   [
+    "Nah, you misread it.",
+    "Macché, hai letto male."
+   ],
+   [
+    "Wrong again.",
+    "Sbagliato di nuovo."
+   ],
+   [
+    "I disagree completely.",
+    "Dissento completamente."
+   ]
+  ],
+  "neg": [
+   [
+    "Absolutely, well said.",
+    "Assolutamente, ben detto."
+   ],
+   [
+    "Thanks a lot.",
+    "Grazie mille."
+   ],
+   [
+    "Looking forward to it.",
+    "Non vedo l'ora."
+   ],
+   [
+    "That makes sense.",
+    "Ha senso."
+   ],
+   [
+    "Congratulations!",
+    "Congratulazioni!"
+   ]
+  ]
+ },
+ "humor": {
+  "pos": [
+   [
+    "lol that is hilarious",
+    "lol è esilarante"
+   ],
+   [
+    "lmao I cannot",
+    "lmao non ce la faccio"
+   ],
+   [
+    "What a funny joke.",
+    "Che battuta divertente."
+   ],
+   [
+    "This meme is so funny.",
+    "Questo meme è troppo divertente."
+   ],
+   [
+    "lol nice one",
+    "lol bella questa"
+   ],
+   [
+    "That joke made my day.",
+    "Questa battuta mi ha fatto la giornata."
+   ],
+   [
+    "lmao you win",
+    "lmao hai vinto"
+   ],
+   [
+    "Funny stuff, honestly.",
+    "Roba divertente, davvero."
+   ],
+   [
+    "Best joke of the week.",
+    "Miglior battuta della settimana."
+   ],
+   [
+    "lol classic",
+    "lol un classico"
+   ]
+  ],
+  "neg": [
+   [
+    "This is a serious matter.",
+    "Questa è una questione seria."
+   ],
+   [
+    "The data is attached.",
+    "I dati sono in allegato."
+   ],
+   [
+    "Please read the rules.",
+    "Leggi le regole, per favore."
+   ],
+   [
+    "Meeting at ten.",
+    "Riunione alle dieci."
+   ],
+   [
+    "Report the bug here.",
+    "Segnala il bug qui."
+   ]
+  ]
+ },
+ "trust": {
+  "pos": [
+   [
+    "Thanks, that is a good point.",
+    "Grazie, è un buon punto."
+   ],
+   [
+    "Here is my source.",
+    "Ecco la mia fonte."
+   ],
+   [
+    "The evidence supports you.",
+    "Le prove ti danno ragione."
+   ],
+   [
+    "Good point, thanks for the link.",
+    "Buon punto, grazie per il link."
+   ],
+   [
+    "Thanks for the evidence.",
+    "Grazie per le prove."
+   ],
+   [
+    "Thanks, I appreciate it.",
+    "Grazie, lo apprezzo."
+   ],
+   [
+    "I will cite the source.",
+    "Citerò la fonte."
+   ],
+   [
+    "Good point about the study.",
+    "Buon punto sullo studio."
+   ],
+   [
+    "Thanks, you convinced me.",
+    "Grazie, mi hai convinto."
+   ],
+   [
+    "Evidence like this helps.",
+    "Prove come questa aiutano."
+   ]
+  ],
+  "neg": [
+   [
+    "Stop talking nonsense.",
+    "Smettila di dire assurdità."
+   ],
+   [
+    "Whatever.",
+    "Come vuoi."
+   ],
+   [
+    "I do not care.",
+    "Non mi interessa."
+   ],
+   [
+    "Boring.",
+    "Noioso."
+   ],
+   [
+    "Leave me alone.",
+    "Lasciami in pace."
+   ]
+  ]
+ },
+ "affinity": {
+  "pos": [
+   [
+    "I agree, exactly.",
+    "Sono d'accordo, esattamente."
+   ],
+   [
+    "That is fair.",
+    "È giusto."
+   ],
+   [
+    "True, well put.",
+    "Vero, ben detto."
+   ],
+   [
+    "Exactly what I think.",
+    "Esattamente quello che penso."
+   ],
+   [
+    "Fair enough, I agree.",
+    "Giusto, concordo."
+   ],
+   [
+    "You are right, true.",
+    "Hai ragione, è vero."
+   ],
+   [
+    "Agree completely.",
+    "Concordo pienamente."
+   ],
+   [
+    "That's fair, thanks.",
+    "È giusto, grazie."
+   ],
+   [
+    "Exactly my point.",
+    "Esattamente il mio punto."
+   ],
+   [
+    "True, that happens a lot.",
+    "Vero, succede spesso."
+   ]
+  ],
+  "neg": [
+   [
+    "This is nonsense.",
+    "Questa è una sciocchezza."
+   ],
+   [
+    "I hate this.",
+    "Odio questo."
+   ],
+   [
+    "Wrong again.",
+    "Sbagliato di nuovo."
+   ],
+   [
+    "No way.",
+    "Neanche per sogno."
+   ],
+   [
+    "Not interested.",
+    "Non mi interessa."
+   ]
+  ]
+ },
+ "callback": {
+  "pos": [
+   [
+    "I remember you saying that.",
+    "Mi ricordo che lo dicevi."
+   ],
+   [
+    "Like last time, you ignore the point.",
+    "Come l'ultima volta, ignori il punto."
+   ],
+   [
+    "Again with this topic.",
+    "Di nuovo con questo argomento."
+   ],
+   [
+    "You said this before.",
+    "L'hai già detto prima."
+   ],
+   [
+    "Same argument as before.",
+    "Stessa discussione di prima."
+   ],
+   [
+    "We already did this one.",
+    "Questa l'abbiamo già fatta."
+   ],
+   [
+    "I remember the thread about it.",
+    "Mi ricordo il thread su questo."
+   ],
+   [
+    "Last time you convinced nobody.",
+    "L'ultima volta non hai convinto nessuno."
+   ],
+   [
+    "Again with that claim.",
+    "Di nuovo con quell'affermazione."
+   ],
+   [
+    "We already did this in the other thread.",
+    "Questo l'abbiamo già fatto nell'altro thread."
+   ]
+  ],
+  "neg": [
+   [
+    "The sky is blue.",
+    "Il cielo è blu."
+   ],
+   [
+    "Pizza is great.",
+    "La pizza è ottima."
+   ],
+   [
+    "Open the window.",
+    "Apri la finestra."
+   ],
+   [
+    "Cats sleep a lot.",
+    "I gatti dormono molto."
+   ],
+   [
+    "Take the first exit.",
+    "Prendi la prima uscita."
+   ]
+  ]
+ }
+}

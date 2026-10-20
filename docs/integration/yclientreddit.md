@@ -6,7 +6,7 @@ Replace direct `_memory_*` usage in `YClientReddit` with package-backed calls wh
 
 Reference implementation location:
 
-- `/Users/rossetti/PycharmProjects/YClientReddit/y_client/classes/base_agent.py`
+- `../../../YClientReddit/y_client/classes/base_agent.py`
 
 ## Recommended migration
 

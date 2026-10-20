@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import re
 
+from .. import i18n
+
 
 def detect_high_affect_signal(
     *,
@@ -11,15 +13,14 @@ def detect_high_affect_signal(
     rule_threshold: float = 0.55,
     uncertain_low: float = 0.35,
     uncertain_high: float = 0.70,
+    language: str | None = None,
 ) -> dict:
     text = str(incoming_text or "").lower()
     triggers = {
-        "criticism_or_challenge": any(token in text for token in ("wrong", "source", "evidence", "prove", "?")),
-        "conflict_or_argument": any(token in text for token in ("wrong", "bullshit", "nonsense", "cope", "argue")),
-        "incoming_anecdote": any(token in text for token in ("i had", "i was", "my experience", "once")),
-        "defending_prior_opinion": prior_match or any(
-            token in text for token in ("last time", "again", "you said this", "same take")
-        ),
+        "criticism_or_challenge": i18n.contains_any(text, "lex__criticism", language),
+        "conflict_or_argument": i18n.contains_any(text, "lex__conflict", language),
+        "incoming_anecdote": i18n.contains_any(text, "lex__anecdote", language),
+        "defending_prior_opinion": prior_match or i18n.contains_any(text, "lex__prior", language),
     }
     score = (
         0.40 * triggers["criticism_or_challenge"]

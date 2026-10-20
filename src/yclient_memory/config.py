@@ -38,6 +38,7 @@ class MemoryConfig:
     high_affect_max_items: int = 6
     high_affect_max_chars: int = 900
     high_affect_llm_fallback: bool = True
+    language: str = "en"
     pair_history_limit: int = 8
     thread_history_limit: int = 12
     extra: dict[str, Any] = field(default_factory=dict)
@@ -88,6 +89,7 @@ class MemoryConfig:
                 raw.get("memory_high_affect_llm_fallback", raw.get("high_affect_llm_fallback", True))
             ),
             nuance_enabled=bool(raw.get("memory_nuance_enabled", raw.get("nuance_enabled", True))),
+            language=str(raw.get("memory_language", raw.get("language", "en")) or "en"),
             pair_history_limit=int(raw.get("pair_history_limit", 8)),
             thread_history_limit=int(raw.get("thread_history_limit", 12)),
             extra=extra,

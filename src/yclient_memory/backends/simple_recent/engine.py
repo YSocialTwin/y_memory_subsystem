@@ -22,6 +22,7 @@ from ...contracts import (
     VoteMemoryEvent,
 )
 from ...policies.decay_policy import apply_decay
+from ... import i18n
 from ...policies.prompt_policy import build_conversation_cues, format_conversation_cues
 from ...policies.safety_policy import sanitize_prompt_memory_text, truncate
 
@@ -52,12 +53,14 @@ def _clip(items: list[_RecentItem], limit: int) -> list[_RecentItem]:
     return items[-limit:]
 
 
-def _relationship_deltas_from_comment(my_text: str, other_text: str) -> tuple[float, float, float, float]:
+def _relationship_deltas_from_comment(
+    my_text: str, other_text: str, language: str | None = None
+) -> tuple[float, float, float, float]:
     text = f"{my_text} {other_text}".lower()
-    affinity = 0.15 if any(token in text for token in ("agree", "fair", "true", "exactly")) else 0.0
-    conflict = 0.25 if any(token in text for token in ("wrong", "nah", "disagree", "source", "evidence")) else 0.0
-    humor = 0.15 if any(token in text for token in ("lol", "lmao", "joke", "funny")) else 0.0
-    trust = 0.10 if any(token in text for token in ("source", "evidence", "thanks", "good point")) else 0.0
+    affinity = 0.15 if i18n.contains_any(text, "lex__s_affinity", language) else 0.0
+    conflict = 0.25 if i18n.contains_any(text, "lex__s_conflict", language) else 0.0
+    humor = 0.15 if i18n.contains_any(text, "lex__s_humor", language) else 0.0
+    trust = 0.10 if i18n.contains_any(text, "lex__s_trust", language) else 0.0
     if conflict > 0.0:
         affinity -= 0.05
         trust -= 0.05
@@ -74,6 +77,9 @@ class SimpleRecentMemoryEngine:
         self._posts: list[PostMemoryEvent] = []
         self._last_decay_round: int | None = None
 
+    def _t(self, key: str, **fields) -> str:
+        return i18n.text(key, self.config.language, **fields)
+
     def capabilities(self) -> MemoryCapabilities:
         return MemoryCapabilities(
             relationship_memory=True,
@@ -87,28 +93,28 @@ class SimpleRecentMemoryEngine:
         if other_user_id is not None and other_user_id in self._relationships:
             state = self._relationships[other_user_id]
             lines.append(
-                "History with @{username}: affinity={affinity:.2f}, conflict={conflict:.2f}, "
-                "humor={humor:.2f}, trust={trust:.2f}".format(
-                    username=(request.other_username or "this user").lstrip("@"),
-                    affinity=state.affinity,
-                    conflict=state.conflict,
-                    humor=state.humor,
-                    trust=state.trust,
+                self._t(
+                    "mem__history_line",
+                    username=(request.other_username or self._t("mem__user_fallback")).lstrip("@"),
+                    affinity=f"{state.affinity:.2f}",
+                    conflict=f"{state.conflict:.2f}",
+                    humor=f"{state.humor:.2f}",
+                    trust=f"{state.trust:.2f}",
                 )
             )
             if state.summary_text:
-                lines.append(f"Continuity: {state.summary_text}")
+                lines.append(self._t("mem__continuity_label", text=state.summary_text))
 
         pair_lines = []
         if other_user_id is not None:
             for item in reversed(self._pair_history.get(other_user_id, [])):
                 if request.thread_root_id is not None and item.thread_root_id == request.thread_root_id:
-                    pair_lines.append(f"earlier here: {item.text}")
+                    pair_lines.append(self._t("mem__continuity_earlier", text=item.text))
                     break
             if not pair_lines:
                 for item in reversed(self._pair_history.get(other_user_id, [])):
                     if request.thread_root_id is None or item.thread_root_id != request.thread_root_id:
-                        pair_lines.append(f"if clearly relevant: {item.text}")
+                        pair_lines.append(self._t("mem__continuity_callback", text=item.text))
                         diagnostics.metadata["cross_thread_callback_candidate"] = True
                         break
         lines.extend(pair_lines)
@@ -130,8 +136,11 @@ class SimpleRecentMemoryEngine:
             nuance_enabled=self.config.nuance_enabled,
             min_score=self.config.nuance_min_score,
             callback_probability=self.config.nuance_callback_probability,
+            language=self.config.language,
         )
-        cues.rendered_text = format_conversation_cues(cues, self.config.nuance_cues_max_chars)
+        cues.rendered_text = format_conversation_cues(
+            cues, self.config.nuance_cues_max_chars, language=self.config.language
+        )
         return ReplyMemoryContext(
             rendered_text=rendered,
             cues=cues,
@@ -151,7 +160,7 @@ class SimpleRecentMemoryEngine:
             return BrowseMemoryContext(diagnostics=diagnostics)
 
         latest = items[-3:]
-        lines = ["[THREAD MEMORY]"]
+        lines = [self._t("mem__thread_header")]
         for item in latest:
             lines.append(f"- r{item.round_id}: {item.text}")
         diagnostics.retrieved_item_count = len(latest)
@@ -164,7 +173,9 @@ class SimpleRecentMemoryEngine:
         if event.other_user_id is None:
             return
         summary = sanitize_prompt_memory_text(
-            event.my_text or event.other_text or f"commented with @{event.other_username or 'user'}",
+            event.my_text
+            or event.other_text
+            or self._t("mem__commented_with", username=event.other_username or "user"),
             120,
         )
         item = _RecentItem(
@@ -184,7 +195,9 @@ class SimpleRecentMemoryEngine:
         )
 
         state = self._relationships[event.other_user_id]
-        affinity, conflict, humor, trust = _relationship_deltas_from_comment(event.my_text, event.other_text)
+        affinity, conflict, humor, trust = _relationship_deltas_from_comment(
+            event.my_text, event.other_text, self.config.language
+        )
         state.affinity += affinity
         state.conflict += conflict
         state.humor += humor

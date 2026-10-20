@@ -1,0 +1,100 @@
+{
+ "pairs": [
+  [
+   "the benchmark results are misleading",
+   "your benchmark evidence is weak",
+   "i risultati del benchmark sono fuorvianti",
+   "le prove del tuo benchmark sono deboli"
+  ],
+  [
+   "nuclear power is the safest option",
+   "nuclear plants are expensive and slow",
+   "il nucleare è l'opzione più sicura",
+   "le centrali nucleari sono costose e lente"
+  ],
+  [
+   "the new phone has a terrible battery",
+   "this phone battery lasts two days",
+   "il nuovo telefono ha una batteria pessima",
+   "la batteria di questo telefono dura due giorni"
+  ],
+  [
+   "remote work hurts junior developers",
+   "juniors learn faster in the office",
+   "il lavoro da remoto penalizza gli sviluppatori junior",
+   "i junior imparano più in fretta in ufficio"
+  ],
+  [
+   "the referee ignored an obvious penalty",
+   "that penalty decision was a scandal",
+   "l'arbitro ha ignorato un rigore evidente",
+   "la decisione sul rigore è stata uno scandalo"
+  ],
+  [
+   "vaccines reduce hospital admissions",
+   "hospital data supports vaccination",
+   "i vaccini riducono i ricoveri ospedalieri",
+   "i dati ospedalieri sostengono la vaccinazione"
+  ],
+  [
+   "electric cars need better charging stations",
+   "charging stations are the real bottleneck",
+   "le auto elettriche hanno bisogno di colonnine migliori",
+   "le colonnine di ricarica sono il vero collo di bottiglia"
+  ],
+  [
+   "the series finale was disappointing",
+   "that finale ruined the whole series",
+   "il finale della serie è stato deludente",
+   "quel finale ha rovinato l'intera serie"
+  ],
+  [
+   "rent prices are destroying young families",
+   "young families cannot afford rent",
+   "i prezzi degli affitti stanno distruggendo le giovani famiglie",
+   "le giovani famiglie non riescono a pagare l'affitto"
+  ],
+  [
+   "open source maintainers deserve funding",
+   "funding for maintainers is essential",
+   "i manutentori open source meritano finanziamenti",
+   "i finanziamenti per i manutentori sono essenziali"
+  ],
+  [
+   "the museum ticket policy is unfair",
+   "museum tickets cost too much",
+   "la politica dei biglietti del museo è ingiusta",
+   "i biglietti del museo costano troppo"
+  ],
+  [
+   "climate protests changed the debate",
+   "protests keep the climate debate alive",
+   "le proteste sul clima hanno cambiato il dibattito",
+   "le proteste mantengono vivo il dibattito sul clima"
+  ]
+ ],
+ "distractors_en": [
+  "i love pasta on sundays",
+  "the train was late again",
+  "what a lovely garden you have",
+  "please send the report by friday",
+  "my cat sleeps all day",
+  "the concert starts at nine",
+  "happy birthday to everyone",
+  "coffee is better in the morning",
+  "see you at the station",
+  "the weather is nice today"
+ ],
+ "distractors_it": [
+  "adoro la pasta la domenica",
+  "il treno era di nuovo in ritardo",
+  "che bel giardino che hai",
+  "manda la relazione entro venerdì",
+  "il mio gatto dorme tutto il giorno",
+  "il concerto inizia alle nove",
+  "buon compleanno a tutti",
+  "il caffè è meglio al mattino",
+  "ci vediamo alla stazione",
+  "oggi il tempo è bello"
+ ]
+}

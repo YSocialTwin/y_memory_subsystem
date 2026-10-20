@@ -1,0 +1,137 @@
+{
+ "criticism": {
+  "pos": [
+   "Hai dei dati a supporto o è solo un'impressione?",
+   "Questa cifra è completamente sbagliata.",
+   "Dov'è la fonte di quello che dici?",
+   "Non è vero, dimostra quello che affermi.",
+   "Ti sbagli, controlla i numeri.",
+   "Dammi un link che lo provi."
+  ],
+  "neg": [
+   "Che bella giornata al mare.",
+   "Domani porto io i panini.",
+   "Il concerto è stato fantastico."
+  ]
+ },
+ "conflict": {
+  "pos": [
+   "Dici solo assurdità da mesi.",
+   "Ma smettila, stai solo cercando di litigare.",
+   "Queste sono cazzate belle e buone.",
+   "Hai torto marcio e lo sai.",
+   "Che stronzata colossale.",
+   "Non ho voglia di discutere con te."
+  ],
+  "neg": [
+   "Mi hai fatto ridere tantissimo.",
+   "Ottima idea, la provo subito.",
+   "Riunione spostata a giovedì."
+  ]
+ },
+ "anecdote": {
+  "pos": [
+   "Mi è capitato la stessa cosa a Torino, ho avuto un guaio enorme.",
+   "Quando ero ragazzo facevo lo stesso.",
+   "Per esperienza personale, non conviene.",
+   "Una volta mio cugino ci ha provato.",
+   "Ho dovuto cambiare lavoro per via di questo.",
+   "Io c'ero, ricordo bene la scena."
+  ],
+  "neg": [
+   "Il pacco arriva venerdì.",
+   "Quel libro è un capolavoro.",
+   "Spegni la luce per favore."
+  ]
+ },
+ "prior": {
+  "pos": [
+   "Ci risiamo con le solite storie.",
+   "Di nuovo questa polemica?",
+   "Come l'altra volta, la pensi uguale.",
+   "Lo avevi già detto la settimana scorsa: lo hai detto più volte.",
+   "L'ultima volta mi hai dato ragione.",
+   "Ancora con questa storia!"
+  ],
+  "neg": [
+   "Passa a prendermi alle otto.",
+   "Mi piace molto questo posto.",
+   "La pasta è pronta."
+  ]
+ },
+ "disagree": {
+  "pos": [
+   "Non sono affatto d'accordo con te.",
+   "Macché, le cose stanno diversamente.",
+   "Dissento su tutta la linea.",
+   "Sbagliato, vai a rileggere.",
+   "Non siamo d'accordo su niente oggi.",
+   "Ti sbagli di grosso."
+  ],
+  "neg": [
+   "Perfetto, ci sto.",
+   "Grazie per l'aiuto di ieri.",
+   "Che notizia bellissima."
+  ]
+ },
+ "humor": {
+  "pos": [
+   "ahah questa è bellissima",
+   "Che scherzo divertente!",
+   "haha troppo forte",
+   "Battuta geniale, mi sono ammazzato dalle risate: lol",
+   "Questo meme è esilarante",
+   "lol ma dai"
+  ],
+  "neg": [
+   "Il verbale è in allegato.",
+   "Chiudo la riunione adesso.",
+   "Il router va riavviato."
+  ]
+ },
+ "trust": {
+  "pos": [
+   "Grazie, ottimo punto sulla ricerca.",
+   "Ecco la fonte da cui l'ho preso.",
+   "Le prove che hai portato mi convincono.",
+   "Grazie mille per il chiarimento.",
+   "Buon punto, non ci avevo pensato.",
+   "Ti allego la fonte ufficiale."
+  ],
+  "neg": [
+   "Non mi fido per niente.",
+   "Che schifo di servizio.",
+   "Lasciamo perdere."
+  ]
+ },
+ "affinity": {
+  "pos": [
+   "Concordo con quello che dici.",
+   "Hai ragione, è andata proprio così.",
+   "Esattamente, è quello che penso anch'io.",
+   "Giusto, non fa una piega.",
+   "Sono d'accordo al cento per cento.",
+   "Vero, ottima osservazione."
+  ],
+  "neg": [
+   "Sbaglio sempre io, vero?",
+   "Non ne posso più di questa storia.",
+   "Fai come vuoi."
+  ]
+ },
+ "callback": {
+  "pos": [
+   "Mi ricordo benissimo quella discussione.",
+   "L'ultima volta è finita male.",
+   "Di nuovo con questo discorso?",
+   "L'hai già detto tre volte.",
+   "Questa l'abbiamo già fatta, non cambia niente.",
+   "Stesso argomento di sempre."
+  ],
+  "neg": [
+   "Il caffè è freddo.",
+   "Andiamo al mare domenica.",
+   "La mostra apre alle dieci."
+  ]
+ }
+}
